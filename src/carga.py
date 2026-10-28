@@ -1,0 +1,52 @@
+"""Carga e inspección inicial del conjunto de datos (Avance 1)."""
+import pandas as pd
+
+
+def cargar_datos(ruta):
+    """
+    Carga un conjunto de datos CSV desde un archivo.
+
+    Parámetros
+    ----------
+    ruta : str
+        Ruta relativa del archivo CSV.
+
+    Retorna
+    -------
+    pandas.DataFrame o None
+        DataFrame con los datos cargados, o None si ocurre un error.
+    """
+    try:
+        datos = pd.read_csv(ruta)
+        return datos
+    except FileNotFoundError:
+        print(f"Error: no se encontró el archivo '{ruta}'.")
+    except pd.errors.EmptyDataError:
+        print("Error: el archivo no contiene datos.")
+    except pd.errors.ParserError:
+        print("Error: no fue posible interpretar el archivo.")
+    except UnicodeDecodeError:
+        print("Error: la codificación del archivo no es compatible.")
+    return None
+
+
+def inspeccionar_datos(datos):
+    """Imprime un diagnóstico inicial del DataFrame."""
+    if datos is None:
+        print("No existen datos disponibles para inspeccionar.")
+        return
+
+    print("\nDimensiones:")
+    print(datos.shape)
+    print("\nColumnas:")
+    print(datos.columns.tolist())
+    print("\nTipos de datos:")
+    print(datos.dtypes)
+    print("\nPrimeros registros:")
+    print(datos.head())
+    print("\nValores nulos por columna:")
+    print(datos.isna().sum())
+    print("\nFilas duplicadas:")
+    print(datos.duplicated().sum())
+    print("\nResumen estadístico:")
+    print(datos.describe(include="all"))
